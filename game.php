@@ -14,7 +14,6 @@ class Game
     public function __construct()
     {
         $this->createHeroes();
-        $this->createEnemies();
     }
 
     private function createHeroes()
@@ -26,10 +25,10 @@ class Game
         $this->heroes = [$seongGiHun, $kangSaeByeok, $choSangWoo];
     }
 
-    private function createEnemies()
+    private function createEnemies($gameLength)
     {
-        for ($i = 1; $i < 20; $i++) {
-            $enemy = new Enemy("Enemy $i", Utils::generateRandomNumber(1, 20), Utils::generateRandomNumber(70, 80));
+        for ($i = 0; $i < $gameLength; $i++) {
+            $enemy = new Enemy("Enemy " . $i + 1, Utils::generateRandomNumber(1, 20), Utils::generateRandomNumber(70, 80));
             $this->enemies[] = $enemy;
         }
     }
@@ -53,24 +52,28 @@ class Game
     {
         $selectedHero = $this->randomHero();
         $selectedDifficulty = $this->randomDifficulty();
-        $gameLenght = $this->difficultyLevels[$selectedDifficulty];
+        $gameLength = $this->difficultyLevels[$selectedDifficulty];
 
         echo "Héros sélectionné : " . $selectedHero->getName();
         echo "<br>";
         echo "Difficulté sélectionnée : $selectedDifficulty";
         echo "<br>";
-        echo "Nombre de manches : " . $gameLenght;
+        echo "Nombre de manches : " . $gameLength;
         echo "<br>";
 
-        $this->playGame($selectedHero, $gameLenght);
+        $this->createEnemies($gameLength);
+
+        echo "Nombre d'ennemis : " . count($this->enemies);
+
+        $this->playGame($selectedHero, $gameLength);
         $this->endGame($selectedHero);
         $this->restartGame();
     }
 
-    private function playGame($selectedHero, $gameLenght)
+    private function playGame($selectedHero, $gameLength)
     {
         $i = 1;
-        while ($i <= $gameLenght && $selectedHero->getMarbles() > 0 && !empty($this->enemies)) {
+        while ($i <= $gameLength && $selectedHero->getMarbles() > 0 && !empty($this->enemies)) {
             $currentEnemy = $this->randomEnemy();
             echo "<br>";
             echo "Manche $i.";
