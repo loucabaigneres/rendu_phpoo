@@ -64,6 +64,7 @@ class Game
 
         $this->playGame($selectedHero, $gameLenght);
         $this->endGame($selectedHero);
+        $this->restartGame();
     }
 
     private function playGame($selectedHero, $gameLenght)
@@ -138,6 +139,22 @@ class Game
         } else {
             echo "<br>";
             echo "C'est fini pour vous. Game Over!";
+        }
+    }
+
+    private function restartGame()
+    {
+        echo "<br>";
+        echo "Voulez-vous rejouer ?";
+        echo "<br>";
+        echo "<br>";
+        echo '<form method="post">';
+        echo '<input type="submit" name="reload" value="Rejouer">';
+        echo '</form>';
+
+        if (isset($_POST['reload'])) {
+            // Recharger la page
+            echo "<meta http-equiv='refresh' content='0'>";
         }
     }
 }
